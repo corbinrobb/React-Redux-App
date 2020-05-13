@@ -1,13 +1,17 @@
-import axios from 'axios';
+import catFacts from '../apis/catFacts';
 
-export const FETCH_API_START = 'FETCH_API_START';
-export const FETCH_API_SUCCESS = 'FETCH_API_SUCCESS';
-export const FETCH_API_FAILURE = 'FETCH_API_FAILURE';
+export const getAPI = () => async dispatch => {
+  const res = await catFacts.get('/facts').catch(err => console.log(err));
+  
+  dispatch({ type: 'FETCH_API', payload: res.data })
+}
 
-export const getAPI = () => dispatch => {
-  dispatch({ type: FETCH_API_START })
-  axios
-    .get('https://cat-fact.herokuapp.com/facts')
-    .then(res => dispatch({ type: FETCH_API_SUCCESS, payload: res.data }))
-    .catch(err => dispatch({ type: FETCH_API_FAILURE, payload: err }))
+export const upvoteFact = (fact, change) => {
+  return {
+    type: 'UPVOTE_FACT',
+    payload: {
+      id: fact._id,
+      change: change,
+    },
+  }
 }

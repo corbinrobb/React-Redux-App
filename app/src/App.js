@@ -6,22 +6,21 @@ import './App.css';
 import Fact from './components/Fact';
 
 
-const App = (props) => {
-  
+const App = ({ getAPI, facts }) => {
   useEffect(() => {
-    props.getAPI()
-  }, [])
+    getAPI()
+  }, [getAPI])
 
   return (
     <div className="container">
       <h1>CAT FACTS</h1>
-      {props.state.facts.all && props.state.facts.all.map((fact, id) => <Fact key={id} data={fact} />)}
+      {facts.all && facts.all.sort((a, b) => b.upvotes - a.upvotes).map((fact, id) => <Fact key={id} data={fact} />)}
     </div>
   );
 }
 
-const mapStateToProps = (state) => {
-  return { state }
+const mapStateToProps = state => {
+  return state;
 }
 
 export default connect(mapStateToProps, { getAPI })(App);
